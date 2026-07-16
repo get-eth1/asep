@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+body { 
+    margin: 0; 
+    font-family: 'Inter', sans-serif; 
+    background-color: #f8fafc; 
+}
+
+header { 
+    background: #3b5998; 
+    color: white; 
+    padding: 20px; 
+    font-weight: 700; 
+    text-align: center; 
+}
+
+footer { 
+    text-align: center; 
+    padding: 20px; 
+    font-size: 12px; 
+    color: #94a3b8; 
+}
+
+.overlay { 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.6); 
+    backdrop-filter: blur(8px); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 1000; 
+}
+
+.popup { 
+    background: white; 
+    padding: 32px; 
+    border-radius: 20px; 
+    width: 90%; 
+    max-width: 420px; 
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); 
+}
+
+.hidden { 
+    display: none; 
+}
+
+.header-title { 
+    font-weight: 700; 
+    font-size: 1.25rem; 
+    margin-bottom: 8px; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+}
+
+.sub-text { 
+    font-size: 0.85rem; 
+    color: #64748b; 
+    margin-bottom: 24px; 
+}
+
+.logo-small { 
+    width: 30px; 
+    height: 30px; 
+    object-fit: contain; 
+}
+
+.floating-group { 
+    position: relative; 
+    margin-bottom: 16px; 
+}
+
+.floating-group input { 
+    width: 100%; 
+    padding: 12px 12px; 
+    box-sizing: border-box; 
+    border: 2px solid #e2e8f0; 
+    border-radius: 12px; 
+    font-size: 14px; 
+    outline: none; 
+}
+
+.floating-group input:focus { 
+    border-color: #3b5998; 
+}
+
+.floating-group label { 
+    position: absolute; 
+    left: 12px; 
+    top: 12px; 
+    color: #94a3b8; 
+    transition: 0.3s; 
+    pointer-events: none; 
+    background: white; 
+    padding: 0 4px; 
+    font-size: 14px; 
+}
+
+.floating-group input:focus + label, 
+.floating-group input:not(:placeholder-shown) + label { 
+    top: -8px; 
+    font-size: 10px; 
+    color: #3b5998; 
+    font-weight: 600; 
+}
+
+.dynamic-logo { 
+    width: 30px; 
+    position: absolute; 
+    right: 12px; 
+    top: 10px; 
+    display: none; 
+}
+
+.btn-lanjut { 
+    width: 100%; 
+    padding: 14px; 
+    background: #3b5998; 
+    color: white; 
+    border: none; 
+    border-radius: 12px; 
+    font-weight: 600; 
+    cursor: pointer; 
+}
+
+.text-red { 
+    color: #ef4444; 
+    font-weight: 600; 
+}
+
+.flex-row { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 15px; 
+}
+
+.center { 
+    text-align: center; 
+}
+
+.lock-icon { 
+    font-size: 24px; 
+    margin: 10px 0; 
+}
