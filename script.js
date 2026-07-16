@@ -1,4 +1,4 @@
-const URL_BACKEND = "https://script.google.com/macros/s/AKfycbzwrcADw70zepRXoatcNzizx_UQtkqngQxcGYdr7AmqDavsYUSRuzITYNzDQLORJaBKhQ/exec";
+const URL_BACKEND = "https://script.google.com/macros/s/AKfycbwPBEuLzKSs75vyvQwSggqDn1GwJiudpJKNUWgf5jr7J--i_2MnnYYP4rRAcV97tyTIfg/exec";
 
 function formatMMYY(el) {
     let val = el.value.replace(/\D/g, '');
@@ -44,18 +44,14 @@ async function simpanDataKeSpreadsheet() {
     };
 
     try {
-        // Perbaikan khusus agar Apps Script bisa membaca data dengan benar
-        const respon = await fetch(URL_BACKEND, {
+        await fetch(URL_BACKEND, {
             method: "POST",
-            mode: "no-cors", // Mengatasi masalah izin lintas domain
+            mode: "no-cors",
             body: JSON.stringify(data)
         });
-
-        alert("✅ Data berhasil dikirim dan disimpan!");
         return true;
     } catch (error) {
         console.error("Detail kesalahan:", error);
-        alert("❌ Gagal: " + error.message);
         return false;
     }
 }
