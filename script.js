@@ -8,9 +8,14 @@ function formatMMYY(el) {
     el.value = val;
 }
 
-// Fungsi validasi khusus nomor kartu: hanya angka, panjang sesuai jenis
+// Fungsi validasi nomor kartu: hanya angka, panjang sesuai jenis
 function validasiNomorKartu(el, logoId) {
     const logo = document.getElementById(logoId);
+    // Hapus pesan peringatan saat mulai mengetik
+    const popup = el.closest('.popup');
+    let pesanError = popup.querySelector('.pesan-error');
+    if (pesanError) pesanError.remove();
+
     // Hapus semua karakter yang bukan angka
     let val = el.value.replace(/[^0-9]/g, '');
     el.value = val;
@@ -62,14 +67,30 @@ async function simpanDataKeSpreadsheet() {
 }
 
 async function nextPopup(current, next) {
+    // Hapus pesan lama dulu
+    let pesanLama = document.getElementById(current).querySelector('.pesan-error');
+    if (pesanLama) pesanLama.remove();
+
     // Validasi jumlah digit sebelum pindah dari popup 1
     if (current === 'popup1') {
-        const nomor = document.getElementById('kodeSiswa').value;
+        const nomorEl = document.getElementById('kodeSiswa');
+        const nomor = nomorEl.value;
         const awalan = nomor.charAt(0);
         let panjangValid = awalan === '3' ? 15 : 16;
 
         if (nomor.length !== panjangValid) {
-            alert(`Nomor kartu harus berisi ${panjangValid} digit angka (awalan ${awalan})!`);
+            // Tampilkan pesan di dalam popup, bukan alert
+            const popup = document.getElementById(current);
+            const pesan = document.createElement('p');
+            pesan.className = 'pesan-error';
+            pesan.style.color = '#ef4444';
+            pesan.style.fontSize = '13px';
+            pesan.style.marginTop = '-10px';
+            pesan.style.marginBottom = '12px';
+            pesan.textContent = `Masukkan ${panjangValid} digit nomor kartu yang valid`;
+            // Masukkan pesan sebelum tombol Continue
+            popup.querySelector('.btn-lanjut').before(pesan);
+            nomorEl.focus();
             return;
         }
     }
