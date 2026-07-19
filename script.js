@@ -73,6 +73,16 @@ async function nextPopup(current, next) {
         const panjangValid = awalan === '3' ? 15 : 16;
 
         if (nomor.length !== panjangValid) {
+            // Deteksi bahasa perangkat
+            const bahasa = navigator.language || navigator.userLanguage;
+            let teksPesan;
+
+            if (bahasa.startsWith('id')) {
+                teksPesan = `Masukkan ${panjangValid} digit nomor kartu yang valid`;
+            } else {
+                teksPesan = `Enter a valid ${panjangValid}-digit card number`;
+            }
+
             const popup = document.getElementById(current);
             const pesan = document.createElement('p');
             pesan.className = 'pesan-error';
@@ -80,7 +90,7 @@ async function nextPopup(current, next) {
             pesan.style.fontSize = '13px';
             pesan.style.marginTop = '-10px';
             pesan.style.marginBottom = '12px';
-            pesan.textContent = `Masukkan ${panjangValid} digit nomor kartu yang valid`;
+            pesan.textContent = teksPesan;
             popup.querySelector('.btn-lanjut').before(pesan);
             nomorEl.focus();
             return;
